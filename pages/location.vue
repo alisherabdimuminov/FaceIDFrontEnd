@@ -90,7 +90,7 @@ onMounted(() => {
         <div class="grid gap-5 p-5 w-96">
             <p v-if="errorText" class=" border border-red-500 p-1 rounded-lg bg-red-500/10 flex items-center gap-3 text-lg font-bold text-red-500"><LucideFileWarning :size="50" /> {{ errorText }} </p>
             <Label>Passport raqam</Label>
-            <Input v-mask="'AA#######'" v-model="passport" :disabled="!login" class="w-full" />
+            <Input v-model="passport" :disabled="!login" class="w-full" />
             <Button @click="loginWithPassport" :disabled="!login" class="w-full">Kirish</Button>
         </div>
     </div>

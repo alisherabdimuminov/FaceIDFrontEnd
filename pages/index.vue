@@ -19,7 +19,7 @@ const isLoading = ref(false);
 const reports = ref<IReport[]>();
 const today = new Date();
 const date = ref({
-    day: 14,
+    day: today.getDate(),
     era: "AD",
     month: today.getMonth()+1,
     year: today.getFullYear(),

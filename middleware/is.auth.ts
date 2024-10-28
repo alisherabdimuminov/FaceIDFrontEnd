@@ -4,6 +4,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const { token, logout } = useAuth();
     if (token === "") {
         logout();
-        return navigateTo({ name: "auth-login" });
+        return navigateTo({ name: "admin-auth-login" });
     }
 });

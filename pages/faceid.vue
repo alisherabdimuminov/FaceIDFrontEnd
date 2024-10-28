@@ -4,6 +4,8 @@ import { LucideCamera, LucideScanFace, LucideCircleCheckBig } from "lucide-vue-n
 import rodriguesRotationVectorFromMatrix from "@/utils/rodrigues";
 import drawBorder from "@/utils/drawBorder";
 import takePicture from "~/utils/takePicture";
+import { toast } from "vue-sonner";
+import { h as hu } from "vue";
 
 
 let colorMode = useColorMode();
@@ -19,7 +21,6 @@ if (passport.value === "") {
 definePageMeta({
     layout: "empty"
 });
-
 useHead({
     title: "FaceID"
 })
@@ -176,12 +177,20 @@ onMounted(async () => {
                     if (response.data === true) {
                         enableWebcamButton.innerText = "Nazoratdan o'tdingiz";
                         enableWebcamButton.setAttribute("disabled", "true");
+                        navigateTo({ name: "passed" });
                     } else {
-                        enableWebcamButton.innerText = "Kechirasiz yuzlar mos kelmadi."
+                        enableWebcamButton.innerText = "Kechirasiz yuzlar mos kelmadi.";
+                        enableWebcamButton.addEventListener("click", () => {
+                            location.reload();
+                        });
+                        toast("Ogohlantirish", {
+                            description: hu("p", { class: "text-red-500" }, "Kechirasiz, yuzlar mos kelmadi. Qaytadan urinib ko'ring")
+                        })
                     }
                 } else {
                     if (response.code === "201") {
                         enableWebcamButton.innerText = "Siz davomatdan o'tgansiz.";
+                        navigateTo({ name: "passed" });
                     }
                 }
                 clearTimeout(timeout);

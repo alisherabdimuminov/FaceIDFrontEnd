@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { LucideLogOut, LucideMoon, LucideSun, LucideUser } from 'lucide-vue-next';
+import { LucideLogOut, LucideMoon, LucideSun, LucideUser, LucideHome } from 'lucide-vue-next';
 import { buttonVariants } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
 
 const { logout } = useAuth();
 const colorMode = useColorMode();
 const route = useRoute();
-
-console.log(route.name)
 
 </script>
 
@@ -19,9 +17,9 @@ console.log(route.name)
                     <p :class="cn(buttonVariants({ variant: 'outline', size: 'sm' }))">Admin</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <NuxtLink class="font-bold" :class="route.name === 'index' ? 'text-foreground underline underline-offset-4': 'text-muted-foreground'" to="/">Home</NuxtLink>
-                    <NuxtLink class="font-bold" :class="route.name === 'employees' ? 'text-foreground underline underline-offset-4': 'text-muted-foreground'" to="/employees/">Xodimlar</NuxtLink>
-                    <NuxtLink class="font-bold" :class="route.name === 'reports' ? 'text-foreground underline underline-offset-4': 'text-muted-foreground'" to="/reports/">Hisobotlar</NuxtLink>
+                    <NuxtLink class="font-bold" :class="route.name === 'admin' ? 'text-foreground underline underline-offset-4': 'text-muted-foreground'" :to="{ name: 'admin' }"><LucideHome :size="16" /></NuxtLink>
+                    <NuxtLink class="font-bold" :class="route.path.includes('employees') ? 'text-foreground underline underline-offset-4': 'text-muted-foreground'" :to="{ name: 'admin-employees' }">Xodimlar</NuxtLink>
+                    <NuxtLink class="font-bold" :class="route.path.includes('reports') ? 'text-foreground underline underline-offset-4': 'text-muted-foreground'" :to="{ name: 'admin-reports' }">Hisobotlar</NuxtLink>
                 </div>
             </div>
             <div>
@@ -46,7 +44,7 @@ console.log(route.name)
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem class="text-red-500" @click="logout">
-                                LogOut
+                                Chiqish
                                 <DropdownMenuShortcut>
                                     <LucideLogOut :size="16" />
                                 </DropdownMenuShortcut>

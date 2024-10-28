@@ -32,7 +32,7 @@ const loginHandler = async () => {
 
     if (response.status === "success") {
         login(response.data);
-        navigateTo('/');
+        navigateTo({ name: "admin" });
     } else {
         if (response.code === "404") {
             toast({

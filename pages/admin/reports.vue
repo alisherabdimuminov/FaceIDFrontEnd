@@ -3,7 +3,7 @@ import { LucideCalendar, LucideCheckCheck, LucideX } from 'lucide-vue-next';
 import { buttonVariants } from '~/components/ui/button';
 import apify from '~/composables/useAPI';
 import { cn } from '~/lib/utils';
-import type { IReport } from '~/types';
+import type { IAttendance, IDepartment, IReport } from '~/types';
 
 
 definePageMeta({
@@ -16,7 +16,9 @@ useHead({
 const { token } = useAuth();
 
 const isLoading = ref(false);
-const reports = ref<IReport[]>();
+const department = ref("0");
+const departments = ref<IDepartment[]>();
+const attendance = ref<IAttendance[]>();
 const today = new Date();
 const date = ref({
     day: today.getDate(),
@@ -28,25 +30,44 @@ const date = ref({
     }
 });
 
-onMounted(() => {
-    getReports();
-});
 
-const getReports = async () => {
+const getDepartments = async () => {
     isLoading.value = true;
-    let response = await $fetch<IReport[]>(apify(`reports/?day=${date.value.day}&month=${date.value.month}&year=${date.value.year}`), {
+    let response = await $fetch<IDepartment[]>(apify(`departments`), {
         headers: {
             "Authorization": `Token ${token}`
         }
     });
-    reports.value = response;
+    departments.value = response;
+    isLoading.value = false;
+}
+
+const getAttendance = async (department: string | number) => {
+    isLoading.value = true;
+    let response = await $fetch<IAttendance[]>(apify(`attendance/?department=${department}&day=${date.value.day}&month=${date.value.month}&year=${date.value.year}`), {
+        headers: {
+            "Authorization": `Token ${token}`
+        }
+    });
+    attendance.value = response;
     isLoading.value = false;
 }
 
 const updateDate = async (value: any) => {
     date.value = value;
-    getReports();
+    getAttendance(department.value);
 }
+
+
+onMounted(() => {
+    getAttendance(0);
+    getDepartments();
+});
+
+
+watch(department, (newValue) => {
+    getAttendance(department.value);
+});
 </script>
 
 <template>
@@ -62,33 +83,39 @@ const updateDate = async (value: any) => {
                 </PopoverContent>
             </Popover>
         </div>
+        <div>
+            <Select v-model="department">
+                <SelectTrigger>
+                    <SelectValue placeholder="Bo'limni tanlang" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="0">Barcha bo'limlar</SelectItem>
+                    <SelectItem v-for="d in departments" :value="d.id">{{ d.name }}</SelectItem>
+                </SelectContent>
+            </Select>
+        </div>
         <div class="border rounded-md flex flex-col overflow-x-auto">
             <Table>
                 <TableHeader class="border-b">
                     <TableHead class="w-4">#</TableHead>
                     <TableHead>Ism</TableHead>
                     <TableHead>Familiya</TableHead>
-                    <TableHead>Bo'lim</TableHead>
-                    <TableHead>Bino</TableHead>
                     <TableHead>Holati</TableHead>
                     <TableHead>Vaqt</TableHead>
-                    <TableHead>Rasm</TableHead>
+                    <TableHead>Bino</TableHead>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="report, index in reports" :key="index">
+                    <TableRow v-for="report, index in attendance" :key="index">
                         <TableCell>{{ index+1 }}</TableCell>
-                        <TableCell>{{ report.employee.first_name }}</TableCell>
-                        <TableCell>{{ report.employee.last_name }}</TableCell>
-                        <TableCell>{{ report.employee.department.name }}</TableCell>
-                        <TableCell>{{ report.area.name }}</TableCell>
+                        <TableCell>{{ report.first_name }}</TableCell>
+                        <TableCell>{{ report.last_name }}</TableCell>
                         <TableCell>
-                            <LucideCheckCheck class="text-green-500" v-if="report.status === 'passed'" />
-                            <LucideX class="text-red-500" v-else />
+                            <span class="text-green-500 font-bold" v-if="report.attendance === 'arrived'">Kelgan</span>
+                            <span class="text-orange-500 font-bold" v-else-if="report.attendance === 'late'">Kech qolgan</span>
+                            <span class="text-red-500 font-bold" v-else-if="report.attendance === 'did_not_come'">Kelmagan</span>
                         </TableCell>
-                        <TableCell>{{ report.created }}</TableCell>
-                        <TableCell>
-                            <img class="w-8 h-8 rounded-md" :src="report.image" alt="">
-                        </TableCell>
+                        <TableCell>{{ report.attendance_time }}</TableCell>
+                        <TableCell>{{ report.attendance_area }}</TableCell>
                     </TableRow>
                     <TableRow v-if="isLoading" v-for="index in 10" :key="index">
                         <TableCell><Skeleton class="w-4 h-4" /></TableCell>
@@ -106,7 +133,7 @@ const updateDate = async (value: any) => {
                     </TableRow>
                 </TableBody>
             </Table>
-            <div v-if="reports?.length === 0" class="flex gap-5 items-center justify-center py-5">
+            <div v-if="attendance?.length === 0" class="flex gap-5 items-center justify-center py-5">
                 <LucideTriangleAlert :size="30" /><p class="text-3xl">Ma'lumot topilmadi</p>
             </div>
         </div>

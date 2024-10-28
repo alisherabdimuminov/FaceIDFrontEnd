@@ -16,8 +16,8 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		public: {
-			// api: "https://fc.uzfi.uz/api/v1/",
-			api: "http://localhost:8000/api/v1/",
+			api: "https://fc.uzfi.uz/api/v1/",
+			// api: "http://localhost:8000/api/v1/",
 		}
 	},
 });

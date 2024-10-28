@@ -1,0 +1,1 @@
+import{aL as s,aM as r,n as i}from"./zgKzL862.js";import{a as m}from"./CG0E6PN7.js";import{u as n}from"./CXIs5lR0.js";const l=s(async(a,p)=>{let e,t;const{token:o}=n();try{let u=([e,t]=r(()=>$fetch(m(`employees/employee/${a.params.uuid}/`),{headers:{Authorization:`Token ${o}`}})),e=await e,t(),e)}catch{return i({name:"admin"})}});export{l as default};

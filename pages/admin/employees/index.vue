@@ -118,7 +118,7 @@ watch(department, (newValue) => {
                             <TableBody>
                                 <TableRow @click="navigateTo({ name: 'admin-employees-uuid', params: { uuid: employee.uuid } })" v-for="employee, index in employees">
                                     <TableCell>{{ index+1 }} </TableCell>
-                                    <TableCell>{{ employee.first_name }} {{ employee.last_name }} {{ employee.middle_name }}</TableCell>
+                                    <TableCell>{{ employee.last_name }} {{ employee.first_name }} {{ employee.middle_name }}</TableCell>
                                     <TableCell>{{ employee.department.name }}</TableCell>
                                     <TableCell>{{ employee.position }}</TableCell>
                                     <TableCell>{{ employee.phone }}</TableCell>

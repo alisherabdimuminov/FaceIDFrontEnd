@@ -98,17 +98,17 @@ watch(department, (newValue) => {
             <Table>
                 <TableHeader class="border-b">
                     <TableHead class="w-4">#</TableHead>
-                    <TableHead>Ism</TableHead>
                     <TableHead>Familiya</TableHead>
+                    <TableHead>Ism</TableHead>
                     <TableHead>Holati</TableHead>
                     <TableHead>Vaqt</TableHead>
                     <TableHead>Bino</TableHead>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="report, index in attendance" :key="index">
+                    <TableRow v-for="report, index in attendance" @click="navigateTo({ name: 'admin-employees-uuid', params: { uuid: report.uuid } })" :key="index">
                         <TableCell>{{ index+1 }}</TableCell>
-                        <TableCell>{{ report.first_name }}</TableCell>
                         <TableCell>{{ report.last_name }}</TableCell>
+                        <TableCell>{{ report.first_name }}</TableCell>
                         <TableCell>
                             <span class="text-green-500 font-bold" v-if="report.attendance === 'arrived'">Kelgan</span>
                             <span class="text-orange-500 font-bold" v-else-if="report.attendance === 'late'">Kech qolgan</span>

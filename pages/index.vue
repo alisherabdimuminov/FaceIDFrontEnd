@@ -12,6 +12,7 @@ useHead({
 
 const { toast } = useToast();
 const config = useRuntimeConfig();
+const route = useRoute();
 
 const longitude = ref(0);
 const latitude = ref(0);
@@ -54,6 +55,34 @@ const error = (err: GeolocationPositionError) => {
     errorText.value = "Sizning joylashuvingizni ololmadik. Iltimos, qaytadan urinib ko'ring";
 }
 
+const sendViaQuery = async (lon: number, lat: number) => {
+    longitude.value = lon;
+    latitude.value = lat;
+    let response = await $fetch<{ status: "success" | "error", code: string, data: object }>(config.public.api + "location/", {
+        method: "POST",
+        body: JSON.stringify({
+            longitude: longitude.value,
+            latitude: latitude.value,
+            // longitude: "66.922222",
+            // latitude: "39.671892",
+        }),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    console.log(response);
+    if (response.code === "200") {
+        login.value = true;
+        toast({
+            title: "Ajoyib",
+            description: "Siz institut hududidasiz. Davom etishingiz mumkin."
+        });
+    } else {
+        errorText.value = "Siz institut hududida emassiz. Iltimos institut hududiga kelib qaytadan urinib ko'ring";
+    }
+    isLoading.value = false;
+}
+
 const loginWithPassport = async () => {
     let response = await $fetch<{ status: "success" | "error", code: string, data: { user_id: number } | null }>(config.public.api + "passport/", {
         method: "POST",
@@ -80,7 +109,13 @@ const loginWithPassport = async () => {
 }
 
 onMounted(() => {
-    navigator.geolocation.getCurrentPosition(success, error);
+    if (route.query.longitude && route.query.latitude) {
+        let lon = parseFloat(route.query.longitude.toString());
+        let lat = parseFloat(route.query.latitude.toString());
+        sendViaQuery(lon, lat);
+    } else {
+        navigator.geolocation.getCurrentPosition(success, error);
+    }
 });
 
 </script>

@@ -79,6 +79,7 @@ const getEmployee = async () => {
 const editEmployee = async () => {
     isLoading.value = true;
     const form = new FormData();
+    const image = document.getElementById("image") as HTMLInputElement;
     if (employee.value) {
         form.append("first_name", employee.value.first_name);
         form.append("last_name", employee.value.last_name);
@@ -100,6 +101,10 @@ const editEmployee = async () => {
         form.append("specialist", employee.value.specialist || "");
         form.append("scientific_title", employee.value.scientific_title || "");
         form.append("academic_degree", employee.value.academic_degree || "");
+
+        if (image && image.files) {
+            form.append("image", image.files[0]);
+        }
     }
     let response = await $fetch<IResponse<string>>(apify(`employees/employee/${route.params.uuid}/edit/`), {
         method: "POST",
@@ -109,6 +114,7 @@ const editEmployee = async () => {
         }
     });
     console.log(response);
+    getEmployee();
     isLoading.value = false;
 }
 
@@ -172,12 +178,12 @@ onMounted(() => {
                     <CardContent class="flex flex-col gap-5">
                         <div class="flex flex-col md:flex-row gap-5">
                             <div class="w-full">
-                                <Label>Ismi</Label>
-                                <Input v-model="employee.first_name" />
-                            </div>
-                            <div class="w-full">
                                 <Label>Familiyasi</Label>
                                 <Input v-model="employee.last_name" />
+                            </div>
+                            <div class="w-full">
+                                <Label>Ismi</Label>
+                                <Input v-model="employee.first_name" />
                             </div>
                             <div class="w-full">
                                 <Label>Sharifi</Label>
@@ -228,6 +234,7 @@ onMounted(() => {
                     <CardContent>
                         <div class="w-full md:w-56 flex flex-col gap-5">
                             <img class="w-56 h-56 border rounded" :src="employee.image" alt="">
+                            <Input type="file" id="image" />
                         </div>
                     </CardContent>
                 </Card>

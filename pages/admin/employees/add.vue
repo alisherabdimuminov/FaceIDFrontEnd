@@ -183,12 +183,12 @@ onMounted(() => {
                     <CardContent class="flex flex-col gap-5">
                         <div class="flex flex-col md:flex-row gap-5">
                             <div class="w-full">
-                                <Label>Ismi</Label>
-                                <Input v-model="employee.first_name" />
-                            </div>
-                            <div class="w-full">
                                 <Label>Familiyasi</Label>
                                 <Input v-model="employee.last_name" />
+                            </div>
+                            <div class="w-full">
+                                <Label>Ismi</Label>
+                                <Input v-model="employee.first_name" />
                             </div>
                             <div class="w-full">
                                 <Label>Sharifi</Label>

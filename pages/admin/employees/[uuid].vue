@@ -103,7 +103,9 @@ const editEmployee = async () => {
         form.append("academic_degree", employee.value.academic_degree || "");
 
         if (image && image.files) {
-            form.append("image", image.files[0]);
+            if (image.files[0]) {
+                form.append("image", image.files[0]);
+            }
         }
     }
     let response = await $fetch<IResponse<string>>(apify(`employees/employee/${route.params.uuid}/edit/`), {

@@ -75,10 +75,10 @@ const sendViaQuery = async (lon: number, lat: number) => {
         login.value = true;
         toast({
             title: "Ajoyib",
-            description: "Siz institut hududidasiz. Davom etishingiz mumkin."
+            description: "Siz office hududidasiz. Davom etishingiz mumkin."
         });
     } else {
-        errorText.value = "Siz institut hududida emassiz. Iltimos institut hududiga kelib qaytadan urinib ko'ring";
+        errorText.value = "Siz office hududida emassiz. Iltimos office hududiga kelib qaytadan urinib ko'ring";
     }
     isLoading.value = false;
 }

@@ -21,7 +21,7 @@ export interface IAttendance {
     uuid: string
     first_name: string
     last_name: string
-    attendance: "arrived" | "did_not_come" | "late"
+    attendance: "arrived" | "did_not_come" | "late" | "failed"
     attendance_time: string
     attendance_area: string
 }

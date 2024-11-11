@@ -112,6 +112,7 @@ watch(department, (newValue) => {
                         <TableCell>{{ report.last_name }} {{ report.first_name }}</TableCell>
                         <TableCell class="border-l">
                             <span class="text-green-500 font-bold" v-if="report.attendance === 'arrived'">Kelgan</span>
+                            <span class="text-yellow-500 font-bold" v-else-if="report.attendance === 'failed'">Xatolik</span>
                             <span class="text-orange-500 font-bold" v-else-if="report.attendance === 'late'">Kech qolgan</span>
                             <span class="text-red-500 font-bold" v-else-if="report.attendance === 'did_not_come'">Kelmagan</span>
                         </TableCell>
@@ -119,6 +120,7 @@ watch(department, (newValue) => {
                         <TableCell>{{ report.attendance_area }}</TableCell>
                         <TableCell class="border-l">
                             <span class="text-green-500 font-bold" v-if="report.attendance === 'arrived'">Ishda</span>
+                            <span class="text-yellow-500 font-bold" v-else-if="report.attendance === 'failed'">Xatolik</span>
                             <span class="text-orange-500 font-bold" v-else-if="report.attendance === 'late'">Kech qolgan</span>
                             <span class="text-red-500 font-bold" v-else-if="report.attendance === 'did_not_come'">Kelmagan</span>
                         </TableCell>

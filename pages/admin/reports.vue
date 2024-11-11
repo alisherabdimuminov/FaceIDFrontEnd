@@ -98,24 +98,32 @@ watch(department, (newValue) => {
             <Table>
                 <TableHeader class="border-b">
                     <TableHead class="w-4">#</TableHead>
-                    <TableHead>Familiya</TableHead>
-                    <TableHead>Ism</TableHead>
-                    <TableHead>Holati</TableHead>
-                    <TableHead>Vaqt</TableHead>
-                    <TableHead>Bino</TableHead>
+                    <TableHead>Xodim</TableHead>
+                    <TableHead class="border-l">(Kelgan) Holati</TableHead>
+                    <TableHead>(Kelgan) Vaqt</TableHead>
+                    <TableHead class="border-r">(Ketgan) Bino</TableHead>
+                    <TableHead>(Ketgan) Holati</TableHead>
+                    <TableHead>(Ketgan) Vaqt</TableHead>
+                    <TableHead>(Ketgan) Bino</TableHead>
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="report, index in attendance" @click="navigateTo({ name: 'admin-employees-uuid', params: { uuid: report.uuid } })" :key="index">
                         <TableCell>{{ index+1 }}</TableCell>
-                        <TableCell>{{ report.last_name }}</TableCell>
-                        <TableCell>{{ report.first_name }}</TableCell>
-                        <TableCell>
+                        <TableCell>{{ report.last_name }} {{ report.first_name }}</TableCell>
+                        <TableCell class="border-l">
                             <span class="text-green-500 font-bold" v-if="report.attendance === 'arrived'">Kelgan</span>
                             <span class="text-orange-500 font-bold" v-else-if="report.attendance === 'late'">Kech qolgan</span>
                             <span class="text-red-500 font-bold" v-else-if="report.attendance === 'did_not_come'">Kelmagan</span>
                         </TableCell>
                         <TableCell>{{ report.attendance_time }}</TableCell>
                         <TableCell>{{ report.attendance_area }}</TableCell>
+                        <TableCell class="border-l">
+                            <span class="text-green-500 font-bold" v-if="report.attendance === 'arrived'">Ishda</span>
+                            <span class="text-orange-500 font-bold" v-else-if="report.attendance === 'late'">Kech qolgan</span>
+                            <span class="text-red-500 font-bold" v-else-if="report.attendance === 'did_not_come'">Kelmagan</span>
+                        </TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
                     </TableRow>
                     <TableRow v-if="isLoading" v-for="index in 10" :key="index">
                         <TableCell><Skeleton class="w-4 h-4" /></TableCell>
